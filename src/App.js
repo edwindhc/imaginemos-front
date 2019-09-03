@@ -1,25 +1,35 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import './App.scss';
+import { Provider } from 'react-redux';
+import store from './store';
+import NavBar from './components/header/NavBar';
+import {BrowserRouter, Switch, Route} from 'react-router-dom'
+import Home from './components/home/Home'
+import Login from './components/layout/Login'
+import Register from './components/layout/Register'
+import PrivateRoute from './components/router/PrivateRoute';
+import ShoppingCart from './components/shop/ShoppingCart';
+import Order from './components/order/Order'
+import { createBrowserHistory as createHistory } from 'history'
+const history = createHistory()
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Provider store={store} history={history}>
+        <BrowserRouter history={history}>
+        <div className="App">
+          <NavBar />
+          <Switch>
+          <Route exact path='/' component={Home} />
+          <Route exact path='/register' component={Register} />
+          <PrivateRoute exact path='/ShoppingCart' component={ShoppingCart} />
+          <PrivateRoute exact path="/home" component={Home} />
+          <PrivateRoute exact path="/orders" component={Order} />
+          <Route exact path='/login' component={Login} />
+          </Switch>
+        </div>
+      </BrowserRouter>
+    </Provider>
   );
 }
 
