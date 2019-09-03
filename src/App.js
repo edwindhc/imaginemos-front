@@ -20,11 +20,11 @@ function App() {
         <div className="App">
           <NavBar />
           <Switch>
-          <Route exact path='/' component={Home} />
+          <PrivateRoute exact roles={'user' || 'admin'} path='/' component={Home} />
           <Route exact path='/register' component={Register} />
-          <PrivateRoute exact path='/ShoppingCart' component={ShoppingCart} />
-          <PrivateRoute exact path="/home" component={Home} />
-          <PrivateRoute exact path="/orders" component={Order} />
+          <PrivateRoute exact roles={'user' || 'admin'} path='/ShoppingCart' component={ShoppingCart} />
+          <PrivateRoute exact roles={'user' || 'admin'} path="/home" component={Home} />
+          <PrivateRoute exact roles={'user' || 'admin'} path="/orders" component={Order} />
           <Route exact path='/login' component={Login} />
           </Switch>
         </div>

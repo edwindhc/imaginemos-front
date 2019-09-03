@@ -8,6 +8,8 @@ import { withRouter } from 'react-router-dom';
 import {Col} from 'reactstrap';
 import Filter from './shop/Filter'
 import { getShoppingCart } from '../actions/shoppingCart'
+import { isLogged } from '../helpers'
+import { getUsers } from '../actions/users'
 
 class ProductList extends Component {
     state = {
@@ -24,7 +26,9 @@ class ProductList extends Component {
         this.setState({total: this.props.products.totals,products: this.props.products.data})
     };
     async getAllProducts(perPage = this.state.perPage, currentPage = this.state.currentPage, name = '', category = ''){
-        await this.props.getShoppingCart();
+        const { auth } = this.props
+        let status = isLogged(auth);
+        if (status) await this.props.getShoppingCart();
         const products = await this.props.getProducts(perPage, currentPage, name, category);
         this.setState({total: this.props.products.totals,products: this.props.products.data, currentPage})
         return products
@@ -62,7 +66,8 @@ class ProductList extends Component {
 }
 
 const mapStateToProps = state => ({
+    auth: state.authentication.user,
     products: state.products.products
 })
 
-export default withRouter(connect(mapStateToProps, {getProducts, getShoppingCart})(ProductList));
+export default withRouter(connect(mapStateToProps, {getProducts, getShoppingCart, getUsers})(ProductList));
