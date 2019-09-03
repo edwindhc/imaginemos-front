@@ -12,28 +12,30 @@ export const shoppingCartService = {
     headers: header()
 };
 
-
+const url = 'http://localhost:8080/';
 
 async function getShoppingCart(product) {
-    let request = await axios.get(`http://localhost:8080/shoppingCart?userId=${Service.currentUser('id')}`, config)
+    let local = JSON.parse(localStorage.getItem('user'))
+    let request = await axios.get(`${url}shoppingCart?userId=${Service.currentUser('id')}`, {headers: {'Authorization': `Bearer ${local.token.accessToken}`}})
     if (request) {
         return request.data;
     }
 }
 
-async function add(product) {
-    let data = await axios.get(`http://localhost:8080/products/${product.id}`, config)
-    await axios.post(`http://localhost:8080/shoppingCart`, {productId: data.data.id, userId: Service.currentUser('id')}, config)
-    const request = await axios.get(`http://localhost:8080/shoppingCart?userId=${Service.currentUser('id')}`, config)
+async function add(product, user) {
+    let local = JSON.parse(localStorage.getItem('user'))
+    let data = await axios.get(`${url}products/${product.id}`, {headers: {'Authorization': `Bearer ${local.token.accessToken}`}})
+    await axios.post(`${url}shoppingCart`, {productId: data.data.id, userId: Service.currentUser('id')}, {headers: {'Authorization': `Bearer ${local.token.accessToken}`}})
+    const request = await axios.get(`${url}shoppingCart?userId=${Service.currentUser('id')}`, {headers: {'Authorization': `Bearer ${local.token.accessToken}`}})
     if (request) {
         return request.data;
     }
 }
 
 async function deleteProduct(id) {
-    let request = await axios.delete(`http://localhost:8080/shoppingCart/${id}`, config)
+    let request = await axios.delete(`${url}shoppingCart/${id}`, config)
     if ( request) {
-        let getShoppingCart = await axios.get(`http://localhost:8080/shoppingCart?userId=${Service.currentUser('id')}`, config)
+        let getShoppingCart = await axios.get(`${url}shoppingCart?userId=${Service.currentUser('id')}`, config)
         if (getShoppingCart) {
             return getShoppingCart.data;
         }

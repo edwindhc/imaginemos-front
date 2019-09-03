@@ -7,6 +7,6 @@ export  const loggedUser = (props, authentication, redirect) => {
 
 export  const isLogged = (authentication) => {
     let local = JSON.parse(localStorage.getItem('user'));
-    if (!isEmpty(authentication.user)) return authentication.token.accessToken = local.token.accessToken
+    if (local) if (!isEmpty(authentication.user)) return authentication.token.accessToken = local.token.accessToken
     return false;
 }

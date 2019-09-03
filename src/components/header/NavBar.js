@@ -29,7 +29,8 @@ class NavBar extends Component {
   async componentDidMount(){
     const { auth } = this.props
     await this.props.getUsers();
-    if (!isLogged(auth)){
+    let status = isLogged(auth);
+    if (status){
       await this.props.getShoppingCart();
     }
   }
@@ -45,7 +46,7 @@ class NavBar extends Component {
   render() {
       const { auth } = this.props
       const totalProductInCart = this.props.cart.length
-      const userAuth = !isLogged(auth) || localStorage.getItem('user')
+      const userAuth = isLogged(auth)
     return (
       <div>
         <Navbar color="light" light expand="md">

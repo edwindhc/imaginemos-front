@@ -7,6 +7,7 @@ import PaginationShop from './shop/PaginationShop'
 import { withRouter } from 'react-router-dom';
 import {Col} from 'reactstrap';
 import Filter from './shop/Filter'
+import { getShoppingCart } from '../actions/shoppingCart'
 
 class ProductList extends Component {
     state = {
@@ -23,7 +24,7 @@ class ProductList extends Component {
         this.setState({total: this.props.products.totals,products: this.props.products.data})
     };
     async getAllProducts(perPage = this.state.perPage, currentPage = this.state.currentPage, name = '', category = ''){
-
+        await this.props.getShoppingCart();
         const products = await this.props.getProducts(perPage, currentPage, name, category);
         this.setState({total: this.props.products.totals,products: this.props.products.data, currentPage})
         return products
@@ -64,4 +65,4 @@ const mapStateToProps = state => ({
     products: state.products.products
 })
 
-export default withRouter(connect(mapStateToProps, {getProducts})(ProductList));
+export default withRouter(connect(mapStateToProps, {getProducts, getShoppingCart})(ProductList));

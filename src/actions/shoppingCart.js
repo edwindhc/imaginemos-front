@@ -27,8 +27,8 @@ export const getShoppingCart =  () =>  async dispatch => {
     }
 }
 
-export const addProduct =  (product) =>  async dispatch => {
-    let request = await shoppingCartService.add(product)
+export const addProduct =  (product, user) =>  async dispatch => {
+    let request = await shoppingCartService.add(product, user)
     try{
         if (request){
             dispatch({
